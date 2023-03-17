@@ -29,9 +29,6 @@ typedef struct Vehicle
 /* Create an instance of a vehicle struct and return it*/
 Vehicle *createVehicle();
 
-/* Read vehicle data from a CSV file and add it to the vehicle linked list */
-void readVehicleDataFromFile(Vehicle **head);
-
 /* Given a id returns a vehicle if it is exist */
 Vehicle *searchVehicleById(int id, Vehicle *vehicles);
 
@@ -69,5 +66,7 @@ int saveVehicle(Vehicle *head);
 /* Read from a binary file a vehicle List */
 int readVehicle(Vehicle **head);
 
+/* Read vehicle data from a CSV file and add it to the vehicle linked list */
+void readVehicleDataFromFile(Vehicle **head);
 
 #endif 
