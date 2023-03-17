@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "user/user.h"
 #include "vehicle/vehicle.h"
+#include "rent/rent.h"
 
 int primaryMenu()
 {
@@ -13,6 +14,7 @@ int primaryMenu()
 	printf("\n 4 - See all Users ");
 	printf("\n 5 - Read data from CSV File ");
 	printf("\n 6 - Choice a User to manage your vehicles");
+	printf("\n 7 - Rent a vehicles");
 	printf("\n 0 - Sair \nR:.");
 	scanf("%d", &option);
 	return option;
@@ -64,21 +66,23 @@ int managingVehicles(Vehicle **vehicles)
 		default:
 			break;
 		}
-	}while(option != 0);
+	} while (option != 0);
 
 	return 0;
 }
 
-void readFromBinaries(User **users, Vehicle **vehicles)
+void readFromBinaries(User **users, Vehicle **vehicles, Rent **rents)
 {
 	readVehicle(vehicles);
 	readUser(users);
+	readRent(rents);
 }
 
-void saveAllInfoOnBinaries(User *users, Vehicle *vehicles)
+void saveAllInfoOnBinaries(User *users, Vehicle *vehicles, Rent *rents)
 {
 	saveVehicle(vehicles);
 	saveUser(users);
+	saveRent(rents);
 }
 
 //hack for MACOS
@@ -87,15 +91,65 @@ void waitHack()
 	system("read -n 1 -s -p \" Press any key to continue...\"");
 }
 
+void addRent(User **userList, Vehicle *vehicleList, Rent **rentList)
+{
+	int userNif, vehicleId, numberOfDays = 0;
+	float rentCost;
+	User *user;
+ 	Vehicle *vehicle;
+
+	printf("\nEnter the user NIF: ");
+	scanf("%d", &userNif);
+	printf("Enter the vehicle ID: ");
+	scanf("%d", &vehicleId);
+	printf("Enter the number of days: ");
+	scanf("%d", &numberOfDays);
+
+	/* Check if the user exists */
+	user = searchUserByNif(userNif, *userList);
+	if (user == NULL)
+	{
+		printf("Error: User with NIF %d does not exist\n", userNif);
+		return;
+	}
+
+	/* Check if the vehicle exists */
+	vehicle = searchVehicleById(vehicleId, vehicleList);
+	if (vehicle == NULL)
+	{
+		printf("Error: Vehicle with ID %d does not exist\n", vehicleId);
+		return;
+	}
+
+	/* Calculate the rent cost */
+	rentCost = vehicle->rentCost * numberOfDays;
+
+	/* Check if the user has enough balance */
+	if (user->balance < rentCost)
+	{
+		printf("Error: User with NIF %d does not have enough balance to rent this vehicle\n", userNif);
+		return;
+	}
+
+	/* Deduct the rent cost from the user's balance */
+	user->balance -= rentCost;
+
+	/* Create the new rent */
+	createRent(userNif, vehicleId, numberOfDays, rentList);
+
+	printf("\nRent created.\n");
+}
+
 int main()
 {
 
 	User *users = NULL;
+	Rent *rents = NULL;
+
 	Vehicle *vehicles = NULL;
 	int firstMenu = 0;
 
-	readFromBinaries(&users, &vehicles);
-
+	readFromBinaries(&users, &vehicles, &rents);
 	do
 	{
 
@@ -139,6 +193,9 @@ int main()
 				printf("\nThe user was not founded or is not manager.");
 			}
 			break;
+		case 7:
+			addRent(&users, vehicles, &rents);
+			break;
 		case 0:
 			break;
 		default:
@@ -148,40 +205,7 @@ int main()
 
 	} while (firstMenu != 0);
 
-	saveAllInfoOnBinaries(users, vehicles);
+	saveAllInfoOnBinaries(users, vehicles, rents);
 
 	waitHack();
-	// /* Ler users */
-	// if (readUser(&users))
-	// {
-	// 	/* Show all users */
-	// 	displayUsersList(users);
-	// }
-
-	// /* Create a user */
-	// createUserToList(&users);
-
-	// /* Edit user by nif */
-	// editUserByNif(&users);
-
-	// /* Apagar user se já existe um user com esse nif */
-
-	// deleteUser(&users);
-
-	// saveUser(users);
-
-	// if(readVehicle(&vehicles)){
-	// 	displayVehiclesList(vehicles);
-	// }
-
-	// createVehicleToList(&vehicles);
-
-	// /* Edit user by nif */
-	// editVehicleById(&vehicles);
-
-	// /* Apagar user se já existe um user com esse nif */
-
-	// deleteVehicle(&vehicles);
-
-	// saveVehicle(vehicles);
 }

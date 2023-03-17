@@ -156,7 +156,8 @@ int logInAsAdmin(User *head)
     scanf("%i", &nifToEdit);
 
     current = searchUserByNif(nifToEdit, head);
-    if(current != NULL && current->isManager){
+    if (current != NULL && current->isManager)
+    {
         return 1;
     }
     return 0;
@@ -184,16 +185,21 @@ void readUserDataFromFile(User **head)
         newUser = malloc(sizeof(User));
         token = strtok(line, ",");
         newUser->nif = atoi(token);
-        token = strtok(NULL, ",");
-        strncpy(newUser->name, token, NAMELENGHT-1);
-        token = strtok(NULL, ",");
-        newUser->balance = atof(token);
-        token = strtok(NULL, ",");
-        strncpy(newUser->address, token, ADDRESSLENGHT-1);
-        token = strtok(NULL, ",");
-        newUser->isManager = atoi(token);
-        newUser->next = NULL;
-        insertUser(newUser,head);
+
+        /* Validate if doesn't exist a user already created with that nif*/
+        if (!userExists(newUser->nif, *head))
+        {
+            token = strtok(NULL, ",");
+            strncpy(newUser->name, token, NAMELENGHT - 1);
+            token = strtok(NULL, ",");
+            newUser->balance = atof(token);
+            token = strtok(NULL, ",");
+            strncpy(newUser->address, token, ADDRESSLENGHT - 1);
+            token = strtok(NULL, ",");
+            newUser->isManager = atoi(token);
+            newUser->next = NULL;
+            insertUser(newUser, head);
+        }
     }
 
     fclose(fp);
@@ -227,13 +233,13 @@ User *createUser()
 /* Display the info of one user */
 void showUser(User *user)
 {
-    printf("\n---------------Start of User--------------\n\n");
+    printf("---------------Start of User--------------\n");
     printf("NIF : %i \n", user->nif);
     printf("Name : %s \n", user->name);
     printf("Balance : %.1f \n", user->balance);
     printf("Address : %s \n", user->address);
-    printf("IsManager : %d \n", user->isManager);
-    printf("\n---------------END of User-----------------\n");
+    printf("IsManager : %s \n", user->isManager ? "Yes" : "No");
+    printf("---------------END of User-----------------\n");
 }
 
 /*Insert one given user to a userList*/
