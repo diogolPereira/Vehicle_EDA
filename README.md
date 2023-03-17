@@ -4,8 +4,8 @@ This is a simple command-line application written in C that simulates a vehicle 
 
 ## Features
 
-- Users can rent and return vehicles
-- Managers can add and remove vehicles from the fleet
+- Users can rent vehicles
+- Managers can add and remove vehicles from the fleet and see the past rents
 - Data is read from a CSV file and persisted in a binary file
 
 ## Installation
