@@ -1,7 +1,7 @@
 all: exec
 
 exec: main.o user.o vehicle.o
-	gcc -g -o exec.out main.o ./user/user.o ./vehicle/vehicle.o
+	gcc -g -o vehicle-rental-system main.o ./user/user.o ./vehicle/vehicle.o
 
 main.o: main.c
 	gcc -g -o main.o main.c -c  -ansi -pedantic -Wno-comment

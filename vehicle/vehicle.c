@@ -143,6 +143,44 @@ int createVehicleToList(Vehicle **head)
     }
 }
 
+/* Read vehicle data from a CSV file and add it to the vehicle linked list */
+void readVehicleDataFromFile(Vehicle **head)
+{
+    FILE *fp;
+    char line[MAX_LINE_LENGTH];
+    char *token;
+    Vehicle *newVehicle;
+
+    fp = fopen(VEHICLECSVFILENAME, "r");
+    if (fp == NULL)
+    {
+        printf("Error: Unable to open file %s\n", VEHICLECSVFILENAME);
+        return;
+    }
+    fgets(line, MAX_LINE_LENGTH, fp); // Read first line (header)
+
+    /* Read each line in the file */
+    while (fgets(line, MAX_LINE_LENGTH, fp) != NULL)
+    {
+        newVehicle = malloc(sizeof(Vehicle));
+        token = strtok(line, ",");
+        newVehicle->id = atoi(token);
+        token = strtok(NULL, ",");
+        strncpy(newVehicle->name, token, NAME_LENGHT-1);
+        token = strtok(NULL, ",");
+        newVehicle->battery = atof(token);
+        token = strtok(NULL, ",");
+        newVehicle->rentCost = atof(token);
+        token = strtok(NULL, ",");
+        strncpy(newVehicle->location, token, LOCATION_LENGHT-1);
+        newVehicle->next = NULL;
+        insertVehicle(newVehicle, head);
+    }
+
+    fclose(fp);
+}
+
+
 /* ------------------- Internal Functions for vehicle Library -------------------- */
 
 /* Create an instance of a vehicle struct and return it*/

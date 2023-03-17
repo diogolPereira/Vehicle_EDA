@@ -1,0 +1,5 @@
+id,name,battery,rentCost,location
+1,Toyota Prius,80.5,45.0,New York
+2,Tesla Model S,95.0,80.0,San Francisco
+3,Chevrolet Bolt,75.0,55.0,Los Angeles
+4,Ford Mustang,65.0,70.0,Miami

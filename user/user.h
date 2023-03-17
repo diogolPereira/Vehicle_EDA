@@ -10,10 +10,11 @@
 #ifndef USERSLIB
 #define USERSLIB
 
+#define MAX_LINE_LENGTH 1000
 #define NAMELENGHT 50
 #define ADDRESSLENGHT 100
 #define USERSFILENAME "./user/user.bin"
-
+#define USERSCSVFILENAME "./user/user.csv"
 
 typedef struct User
 {
@@ -55,6 +56,9 @@ int logInAsAdmin(User *head);
 
 
 /* -------- Functions to manage User list -------- */
+
+/* Read user data from a CSV file and add it to the user linked list */
+void readUserDataFromFile(User **head);
 
 /* Display All Users from a list */
 void displayUsersList(User *lst);

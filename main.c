@@ -11,7 +11,8 @@ int primaryMenu()
 	printf("\n 2 - Edit a User ");
 	printf("\n 3 - Delete a User ");
 	printf("\n 4 - See all Users ");
-	printf("\n 5 - Choice a User to manage your vehicles");
+	printf("\n 5 - Read data from CSV File ");
+	printf("\n 6 - Choice a User to manage your vehicles");
 	printf("\n 0 - Sair \nR:.");
 	scanf("%d", &option);
 	return option;
@@ -27,6 +28,7 @@ int managingVehicles(Vehicle **vehicles)
 		printf("\n 2 - Edit a Vehicle ");
 		printf("\n 3 - Delete a Vehicle ");
 		printf("\n 4 - See all Vehicles ");
+		printf("\n 5 - Import vehicles as csv file ");
 		printf("\n 0 - Sair \nR:.");
 		scanf("%d", &option);
 
@@ -53,6 +55,10 @@ int managingVehicles(Vehicle **vehicles)
 		// Show all vehicles
 		case 4:
 			displayVehiclesList(*vehicles);
+			break;
+		// Show all vehicles
+		case 5:
+			readVehicleDataFromFile(vehicles);
 			break;
 
 		default:
@@ -120,6 +126,9 @@ int main()
 			displayUsersList(users);
 			break;
 		case 5:
+			readUserDataFromFile(&users);
+			break;
+		case 6:
 			// Get an nif from user and validate premissions
 			if (logInAsAdmin(users) == 1)
 			{

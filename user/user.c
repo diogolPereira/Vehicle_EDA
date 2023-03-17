@@ -120,7 +120,6 @@ int readUser(User **head)
         }
 
         insertUser(newUser, head);
-        ;
     }
 
     fclose(file);
@@ -161,6 +160,43 @@ int logInAsAdmin(User *head)
         return 1;
     }
     return 0;
+}
+
+/* Read user data from a CSV file and add it to the user linked list */
+void readUserDataFromFile(User **head)
+{
+    FILE *fp;
+    char line[MAX_LINE_LENGTH];
+    char *token;
+    User *newUser;
+
+    fp = fopen(USERSCSVFILENAME, "r");
+    if (fp == NULL)
+    {
+        printf("Error: Unable to open file %s\n", USERSCSVFILENAME);
+        return;
+    }
+    fgets(line, MAX_LINE_LENGTH, fp); // Read first line (header)
+
+    /* Read each line in the file */
+    while (fgets(line, MAX_LINE_LENGTH, fp) != NULL)
+    {
+        newUser = malloc(sizeof(User));
+        token = strtok(line, ",");
+        newUser->nif = atoi(token);
+        token = strtok(NULL, ",");
+        strncpy(newUser->name, token, NAMELENGHT-1);
+        token = strtok(NULL, ",");
+        newUser->balance = atof(token);
+        token = strtok(NULL, ",");
+        strncpy(newUser->address, token, ADDRESSLENGHT-1);
+        token = strtok(NULL, ",");
+        newUser->isManager = atoi(token);
+        newUser->next = NULL;
+        insertUser(newUser,head);
+    }
+
+    fclose(fp);
 }
 
 /* ------------------- Internal Functions for user Library -------------------- */

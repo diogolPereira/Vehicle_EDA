@@ -9,10 +9,11 @@
 
 #ifndef VEHICLESLIB
 #define VEHICLESLIB
-
+#define MAX_LINE_LENGTH 1000
 #define NAME_LENGHT 100
 #define LOCATION_LENGHT 100
 #define VEHICLEFILENAME "./vehicle/vehicle.bin"
+#define VEHICLECSVFILENAME "./vehicle/vehicle.csv"
 
 
 typedef struct Vehicle
@@ -27,6 +28,9 @@ typedef struct Vehicle
 
 /* Create an instance of a vehicle struct and return it*/
 Vehicle *createVehicle();
+
+/* Read vehicle data from a CSV file and add it to the vehicle linked list */
+void readVehicleDataFromFile(Vehicle **head);
 
 /* Given a id returns a vehicle if it is exist */
 Vehicle *searchVehicleById(int id, Vehicle *vehicles);
