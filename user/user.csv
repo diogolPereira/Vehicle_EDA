@@ -1,4 +1,5 @@
 NIF,Name,Balance,Address,isManager
-123456789,John Smith,5000,123 Main Street,0
-987654321,Jane Doe,10000,456 Maple Avenue,1
-555555555,Bob Johnson,2500,789 Oak Lane,0
+123,User 2,100,Barcelos,0
+231,User 3,100,Porto,1
+222,User 4,500,Porto,0
+241,Diogo,195945.0,Barcelos,1

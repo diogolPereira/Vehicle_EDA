@@ -165,21 +165,24 @@ void readVehicleDataFromFile(Vehicle **head)
         newVehicle = malloc(sizeof(Vehicle));
         token = strtok(line, ",");
         newVehicle->id = atoi(token);
-        token = strtok(NULL, ",");
-        strncpy(newVehicle->name, token, NAME_LENGHT-1);
-        token = strtok(NULL, ",");
-        newVehicle->battery = atof(token);
-        token = strtok(NULL, ",");
-        newVehicle->rentCost = atof(token);
-        token = strtok(NULL, ",");
-        strncpy(newVehicle->location, token, LOCATION_LENGHT-1);
-        newVehicle->next = NULL;
-        insertVehicle(newVehicle, head);
+        /* Validate if doesn't exist a vehicle already created with that id*/
+        if (!vehicleExists(newVehicle->id,*head))
+        {
+            token = strtok(NULL, ",");
+            strncpy(newVehicle->name, token, NAME_LENGHT - 1);
+            token = strtok(NULL, ",");
+            newVehicle->battery = atof(token);
+            token = strtok(NULL, ",");
+            newVehicle->rentCost = atof(token);
+            token = strtok(NULL, ",");
+            strncpy(newVehicle->location, token, LOCATION_LENGHT - 1);
+            newVehicle->next = NULL;
+            insertVehicle(newVehicle, head);
+        }
     }
 
     fclose(fp);
 }
-
 
 /* ------------------- Internal Functions for vehicle Library -------------------- */
 
@@ -213,28 +216,27 @@ Vehicle *createVehicle()
 /* Display the info of one vehicle */
 void showVehicle(Vehicle *vehicle)
 {
-    printf("\n---------------Start of Vehicle--------------\n\n");
+    printf("---------------Start of Vehicle--------------\n");
     printf("Vehicle ID: %d \n", vehicle->id);
     printf("Vehicle Name: %s \n", vehicle->name);
     printf("Vehicle Battery Level: %.2f \n", vehicle->battery);
     printf("Vehicle Rental Cost per Day: %.2f \n", vehicle->rentCost);
     printf("Vehicle Location: %s \n", vehicle->location);
-    printf("\n---------------END of Vehicle-----------------\n");
-
+    printf("---------------END of Vehicle-----------------\n");
 }
 
 /*Insert one given vehicle to a vehicleList*/
 void insertVehicle(Vehicle *newVehicle, Vehicle **head)
 {
-        newVehicle->next = *head;
-        *head = newVehicle;
+    newVehicle->next = *head;
+    *head = newVehicle;
 }
 
 /* Edit one given vehicle */
 void editVehicle(Vehicle **vehicle)
 {
 
-    char newLocation[LOCATION_LENGHT],newName[NAME_LENGHT],newBattery[50],newCost[50];
+    char newLocation[LOCATION_LENGHT], newName[NAME_LENGHT], newBattery[50], newCost[50];
 
     printf("Enter new name (leave blank for no change): ");
     scanf(" %[^\n]s", newName);
