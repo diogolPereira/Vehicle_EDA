@@ -20,6 +20,8 @@ int deleteUser(User **head)
     User *temp = *head;
     User *prev;
     int nif;
+
+    getchar(); // Clean Bufer
     printf("\n Que nif pretende apagar? \n");
     scanf("%i", &nif);
 
@@ -213,15 +215,15 @@ User *createUser()
     User *newUser = malloc(sizeof(User));
 
     printf("\n---------------Create User--------------\n\n");
-    printf("User name:");
+    printf("User name: ");
     scanf("%[^\n]", newUser->name);
     getchar();
-    printf("User NIF:");
+    printf("User NIF: ");
     scanf("%i", &newUser->nif);
-    printf("User balance:");
+    printf("User balance: ");
     scanf("%lf", &newUser->balance);
     getchar();
-    printf("User Address:");
+    printf("User Address: ");
     scanf("%[^\n]", newUser->address);
     printf("Is admin: [0 - No 1 - Yes] \n");
     scanf("%i", &newUser->isManager);
@@ -264,33 +266,28 @@ void editUser(User **user)
     int choice;
 
     printf("Qual campo quer editar?\n");
-    printf("1. NIF\n");
-    printf("2. Name\n");
-    printf("3. Balance\n");
-    printf("4. Address\n");
-    printf("5. isManager\n");
+    printf("1. Name\n");
+    printf("2. Balance\n");
+    printf("3. Address\n");
+    printf("4. isManager\n");
     printf("Enter choice: ");
     scanf("%d", &choice);
 
     switch (choice)
     {
     case 1:
-        printf("\nNew NIF: ");
-        scanf("%d", &current->nif);
-        break;
-    case 2:
         printf("\nNew name: ");
         scanf(" %[^\n]", current->name);
         break;
-    case 3:
+    case 2:
         printf("\nNew balance: ");
         scanf("%lf", &current->balance);
         break;
-    case 4:
+    case 3:
         printf("\nNew address: ");
         scanf(" %[^\n]", current->address);
         break;
-    case 5:
+    case 4:
         printf("\nIs admin: [0 - No 1 - Yes] ");
         scanf("%d", &current->isManager);
         break;

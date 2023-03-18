@@ -49,7 +49,22 @@ int vehicleExists(int id, Vehicle *vehicle);
 /* Create an Vehicle and add it to an given list */
 int createVehicleToList(Vehicle **head);
 
+/* Receive an linked list and the number of items it hold and return an array */
+Vehicle **getVehicleFromListIntoArray(int n, Vehicle *vehicleList);
+
+/* Count the elements of vehicle linked list */
+int countVehiclesFromList(Vehicle *sortedList);
+
+/* List all vehicles from a location given by User */
+void listVehiclesByLocation(Vehicle *vehicleList);
+
 /* -------- Functions to manage Vehicle list -------- */
+
+/* Compares two vehicles based on their battery level */
+int compareVehiclesByBattery(const void *a, const void *b);
+
+/* Give all vehicles from on location received */
+void getVehiclesByLocation(Vehicle *head, char *location);
 
 /* Display All Vehicles from a list */
 void displayVehiclesList(Vehicle *lst);
@@ -69,4 +84,7 @@ int readVehicle(Vehicle **head);
 /* Read vehicle data from a CSV file and add it to the vehicle linked list */
 void readVehicleDataFromFile(Vehicle **head);
 
-#endif 
+/* Sort an list of vehicle by batery */
+void listVehiclesSortedByBattery(Vehicle *vehicleList);
+
+#endif

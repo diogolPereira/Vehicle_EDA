@@ -21,9 +21,17 @@ typedef struct Rent
     struct Rent *next;
 } Rent;
 
-void createRent(int userNif,int vehicleId,int numberOfDays, Rent **head);
+/* Create a new rent struct and return it */
+void createRent(int userNif, int vehicleId, int numberOfDays, Rent **head);
 
+/*Insert one given rent to a rentList*/
 void insertRent(Rent *newRent, Rent **head);
+
+/* Display All Rents from a list */
+void displayRentsList(Rent *lst);
+
+/* Display the info of one user */
+void showRent(Rent *rent);
 
 /* Save a given Rent List to a binnary file */
 int saveRent(Rent *head);

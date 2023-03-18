@@ -4,6 +4,7 @@
 #include "vehicle/vehicle.h"
 #include "rent/rent.h"
 
+// Primary menu of the app
 int primaryMenu()
 {
 	int option;
@@ -15,11 +16,16 @@ int primaryMenu()
 	printf("\n 5 - Read data from CSV File ");
 	printf("\n 6 - Choice a User to manage your vehicles");
 	printf("\n 7 - Rent a vehicles");
+	printf("\n 8 - See all vehicles sorted descending by batery");
+	printf("\n 9 - See all vehicles from a location");
+	printf("\n 10 - See all rents");
+
 	printf("\n 0 - Sair \nR:.");
 	scanf("%d", &option);
 	return option;
 }
 
+// All stuff related vehicle management
 int managingVehicles(Vehicle **vehicles)
 {
 	int option;
@@ -71,6 +77,7 @@ int managingVehicles(Vehicle **vehicles)
 	return 0;
 }
 
+// Read all presisted data
 void readFromBinaries(User **users, Vehicle **vehicles, Rent **rents)
 {
 	readVehicle(vehicles);
@@ -78,6 +85,7 @@ void readFromBinaries(User **users, Vehicle **vehicles, Rent **rents)
 	readRent(rents);
 }
 
+// Save all data to their relatable bin file
 void saveAllInfoOnBinaries(User *users, Vehicle *vehicles, Rent *rents)
 {
 	saveVehicle(vehicles);
@@ -96,7 +104,7 @@ void addRent(User **userList, Vehicle *vehicleList, Rent **rentList)
 	int userNif, vehicleId, numberOfDays = 0;
 	float rentCost;
 	User *user;
- 	Vehicle *vehicle;
+	Vehicle *vehicle;
 
 	printf("\nEnter the user NIF: ");
 	scanf("%d", &userNif);
@@ -171,7 +179,6 @@ int main()
 
 		// Delete a user
 		case 3:
-			getchar(); // Clean Bufer
 			deleteUser(&users);
 			break;
 
@@ -179,9 +186,11 @@ int main()
 		case 4:
 			displayUsersList(users);
 			break;
+		// Read user from csv
 		case 5:
 			readUserDataFromFile(&users);
 			break;
+		// managing vehicles list
 		case 6:
 			// Get an nif from user and validate premissions
 			if (logInAsAdmin(users) == 1)
@@ -193,8 +202,21 @@ int main()
 				printf("\nThe user was not founded or is not manager.");
 			}
 			break;
+		// rent vehicles
 		case 7:
 			addRent(&users, vehicles, &rents);
+			break;
+		// See all vehicles sorted descending by batery
+		case 8:
+			listVehiclesSortedByBattery(vehicles);
+			break;
+		// See all vehicles by location
+		case 9:
+			listVehiclesByLocation(vehicles);
+			break;
+		// See all rents
+		case 10:
+			displayRentsList(rents);
 			break;
 		case 0:
 			break;

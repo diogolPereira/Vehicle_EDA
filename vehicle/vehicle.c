@@ -166,16 +166,17 @@ void readVehicleDataFromFile(Vehicle **head)
         token = strtok(line, ",");
         newVehicle->id = atoi(token);
         /* Validate if doesn't exist a vehicle already created with that id*/
-        if (!vehicleExists(newVehicle->id,*head))
+        if (!vehicleExists(newVehicle->id, *head))
         {
             token = strtok(NULL, ",");
-            strncpy(newVehicle->name, token, NAME_LENGHT - 1);
+            strncpy(newVehicle->name, token, NAME_LENGHT);
             token = strtok(NULL, ",");
             newVehicle->battery = atof(token);
             token = strtok(NULL, ",");
             newVehicle->rentCost = atof(token);
-            token = strtok(NULL, ",");
+            token = strtok(NULL, "\t");
             strncpy(newVehicle->location, token, LOCATION_LENGHT - 1);
+            newVehicle->location[strcspn(newVehicle->location, "\n")] = '\0'; // remove the break line
             newVehicle->next = NULL;
             insertVehicle(newVehicle, head);
         }
@@ -184,7 +185,102 @@ void readVehicleDataFromFile(Vehicle **head)
     fclose(fp);
 }
 
+/* Sort an list of vehicle by batery */
+void listVehiclesSortedByBattery(Vehicle *vehicleList)
+{
+    int i;
+    /* Count the number of vehicles in the list */
+    int n = countVehiclesFromList(vehicleList);
+    /* Get Array */
+    Vehicle **vehicleArray = getVehicleFromListIntoArray(n, vehicleList);
+
+    /* Sort the array by battery descending */
+    qsort(vehicleArray, n, sizeof(Vehicle *), compareVehiclesByBattery);
+
+    /* Print the sorted list of vehicles */
+    printf("\nList of Vehicles by Battery:\n");
+    for (i = 0; i < n; i++)
+    {
+        showVehicle(vehicleArray[i]);
+    }
+
+    /* Free the memory used by the array */
+    free(vehicleArray);
+}
+
+/* List all vehicles from a location given by User */
+void listVehiclesByLocation(Vehicle *vehicleList)
+{
+    Vehicle *tempVehicleList;
+    char location[LOCATION_LENGHT];
+
+    getchar(); // clean buffer
+
+    printf("\nEnter a location to filter vehicles: ");
+    scanf("%[^\n]", location);
+
+    getVehiclesByLocation(vehicleList, location);
+}
+
 /* ------------------- Internal Functions for vehicle Library -------------------- */
+
+/* Compares two vehicles based on their battery level */
+int compareVehiclesByBattery(const void *a, const void *b)
+{
+    const Vehicle *vehicleA = *(const Vehicle **)a;
+    const Vehicle *vehicleB = *(const Vehicle **)b;
+    return vehicleB->battery - vehicleA->battery;
+}
+
+/* Give all vehicles from on location received */
+void getVehiclesByLocation(Vehicle *head, char location[LOCATION_LENGHT])
+{
+    Vehicle *currentVehicle = head;
+
+    /* Loop through all vehicles */
+    while (currentVehicle != NULL)
+    {
+
+        /* If the vehicle is in the specified location */
+        if (strcmp(currentVehicle->location, location) == 0)
+        {
+            /* Add the vehicle to the new linked list */
+            showVehicle(currentVehicle);
+        }
+
+        /* Move to the next vehicle */
+        currentVehicle = currentVehicle->next;
+    }
+}
+
+/* Receive an linked list and the number of items it hold and return an array */
+Vehicle **getVehicleFromListIntoArray(int n, Vehicle *vehicleList)
+{
+    int i;
+    Vehicle *sortedList;
+    /* Create an array to store the vehicles */
+    Vehicle **vehicleArray = malloc(n * sizeof(Vehicle *));
+    /* Populate the array with the vehicles */
+    sortedList = vehicleList;
+    for (i = 0; i < n; i++)
+    {
+        vehicleArray[i] = sortedList;
+        sortedList = sortedList->next;
+    }
+    return vehicleArray;
+}
+
+/* Count the elements of vehicle linked list */
+int countVehiclesFromList(Vehicle *sortedList)
+{
+    int n = 0;
+    while (sortedList != NULL)
+    {
+        n++;
+        sortedList = sortedList->next;
+    }
+    return n;
+}
 
 /* Create an instance of a vehicle struct and return it*/
 Vehicle *createVehicle()
@@ -213,6 +309,7 @@ Vehicle *createVehicle()
     newVehicle->next = NULL;
     return newVehicle;
 }
+
 /* Display the info of one vehicle */
 void showVehicle(Vehicle *vehicle)
 {
@@ -235,36 +332,44 @@ void insertVehicle(Vehicle *newVehicle, Vehicle **head)
 /* Edit one given vehicle */
 void editVehicle(Vehicle **vehicle)
 {
-
     char newLocation[LOCATION_LENGHT], newName[NAME_LENGHT], newBattery[50], newCost[50];
-
+    getchar(); // Consume newline left in input buffer after scanf
     printf("Enter new name (leave blank for no change): ");
-    scanf(" %[^\n]s", newName);
+    scanf("%[^\n]s%*c", newName);
+
     if (strlen(newName) > 0)
     {
         strcpy((*vehicle)->name, newName);
     }
-
+    getchar(); // Consume newline left in input buffer after scanf
     printf("Enter new battery level (leave blank for no change): ");
-    scanf(" %[^\n]s", newBattery);
-    if (strlen(newBattery) >= 0)
+    scanf("%[^\n]s%*c", newBattery);
+
+    if (strlen(newBattery) > 0)
     {
         (*vehicle)->battery = atof(newBattery);
     }
 
+
+    getchar(); // Consume newline left in input buffer after scanf
     printf("Enter new rental cost per day (leave blank for no change): ");
-    scanf(" %[^\n]s", newCost);
+    scanf("%[^\n]s%*c", newCost);
+
     if (strlen(newCost) > 0)
     {
         (*vehicle)->rentCost = atof(newCost);
     }
+
+    getchar(); // Consume newline left in input buffer after scanf
+    memset(newLocation, 0, LOCATION_LENGHT);//initialize a clean array char 
     printf("Enter new location (leave blank for no change): ");
-    scanf(" %[^\n]s", newLocation);
+    scanf("%[^\n]%*c", newLocation);
     if (strlen(newLocation) > 0)
     {
         strcpy((*vehicle)->location, newLocation);
     }
 }
+
 
 /* Given a id returns a vehicle if it is exist */
 Vehicle *searchVehicleById(int id, Vehicle *vehicles)
