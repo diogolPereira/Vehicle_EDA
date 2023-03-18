@@ -11,6 +11,18 @@ int getNextRentId()
     return nextRentId++;
 }
 
+/* Display All Rents from a list */
+void displayRentsList(Rent *lst)
+{
+    Rent *aux = lst;
+    while (aux != NULL)
+    {
+        showRent(aux);
+        aux = aux->next;
+    }
+    putchar('\n');
+}
+
 /* Create a new rent struct and return it */
 void createRent(int userNif, int vehicleId, int numberOfDays, Rent **head)
 {
@@ -34,6 +46,7 @@ void createRent(int userNif, int vehicleId, int numberOfDays, Rent **head)
     insertRent(newRent, head);
 }
 
+/*Insert one given rent to a rentList*/
 void insertRent(Rent *newRent, Rent **head)
 {
     if (*head == NULL)
@@ -101,5 +114,16 @@ int readRent(Rent**head)
 
     fclose(file);
     return 1; // Rentread successfully
+}
+
+
+/* Display the info of one user */
+void showRent(Rent *rent)
+{
+    printf("---------------Start of Rent--------------\n");
+    printf("User Nif : %i \n", rent->userNif);
+    printf("Vehicle Id : %i \n", rent->vehicleId);
+    printf("Number of days : %i \n", rent->numberOfDays);
+    printf("---------------END of User-----------------\n");
 }
 
