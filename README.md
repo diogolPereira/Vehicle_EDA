@@ -10,12 +10,12 @@ This is a simple command-line application written in C that simulates a vehicle 
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/vehicle-rental-system.git`
+1. Clone the repository: `git clone https://github.com/diogolPereira/Vehicle_EDA`
 2. Build the project: `make`
 3. Run the program: `./vehicle-rental-system`
 
 
 ## Data Storage
 
-The program reads data from a CSV file `vehicles.csv`, and writes data to a binary file `vehicles.dat`. When the program is started, it reads the data from the CSV file and stores it in memory. When the program exits, it writes the data to the binary file. This ensures that the data is persisted between runs of the program.
+The program reads data from a CSV file `vehicle.csv` and presist data in binary files like `vehicle.bin`. When the app start try to load data from the past session by the binary files if you want to add more data you only need to inser or in vehicles or users csv file.
 
