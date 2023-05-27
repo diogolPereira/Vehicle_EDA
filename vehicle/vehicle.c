@@ -6,8 +6,8 @@
 void displayVehiclesList(Vehicle *lst)
 {
     Vehicle *aux = lst;
-    while (aux != NULL)
-    {
+    while (aux != NULL )
+    {  
         showVehicle(aux);
         aux = aux->next;
     }
@@ -318,14 +318,17 @@ void showVehicle(Vehicle *vehicle)
     printf("Vehicle Name: %s \n", vehicle->name);
     printf("Vehicle Battery Level: %.2f \n", vehicle->battery);
     printf("Vehicle Rental Cost per Day: %.2f \n", vehicle->rentCost);
-    printf("Vehicle Location: %s \n", vehicle->location);
     printf("---------------END of Vehicle-----------------\n");
 }
 
 /*Insert one given vehicle to a vehicleList*/
 void insertVehicle(Vehicle *newVehicle, Vehicle **head)
 {
-    newVehicle->next = *head;
+    if(head == NULL){
+        newVehicle->next = NULL;
+    } else {
+        newVehicle->next = *head;
+    }
     *head = newVehicle;
 }
 

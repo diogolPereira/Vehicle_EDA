@@ -240,44 +240,36 @@ int mainPart1()
 }
 
 int mainPart2()
-{    
-	VerticePeso* verticesPeso = NULL;
+{
+	Grafo *g = NULL;
+	User *users = NULL;
+	Rent *rents = NULL;
+	VerticePeso *verticesPeso = NULL;
+	Vehicle *vehicles = NULL;
 
-	Grafo* g = NULL;
-	// criarVertice(&g, 1 ,  "A");
-	// criarVertice(&g, 2 , "B");
-	// criarVertice(&g, 3 , "C");
-	// criarVertice(&g, 4,"D");
-	// criarVertice(&g, 5,"E");
-	// criarVertice(&g, 6,"F");
-	// criarVertice(&g, 7,"G");
-
-	// criarAresta(g, 1, 3, 11);
-	// criarAresta(g, 1, 2, 1);
-	// criarAresta(g, 1, 4, 3);
-	// criarAresta(g, 1, 5, 5);
-
-	// criarAresta(g, 2, 3, 9);
-	// criarAresta(g, 2, 4, 3);
-	// criarAresta(g, 2, 5, 2);
-
-	// criarAresta(g, 3, 4, 1);
-	// criarAresta(g, 3, 7, 4);
-
-	// criarAresta(g, 4, 5, 12);
-
-	// printf("Grafo\n");
-	// mostraGrafo(g);
-
+	//Ler binarios
+	readFromBinaries(&users, &vehicles, &rents);
 	loadGraph(&g, "./graph/teste.bin");
 	loadAdj(g);
+	loadVei(g);
+	// adicionarVeiculoVertice(g, 2, vehicles);
+	// adicionarVeiculoVertice(g, 2, vehicles->next);
+	// adicionarVeiculoVertice(g, 3, vehicles->next->next);
+
+	// Código- Logica
+
 	mostraGrafo(g);
-	verticesPeso = obterVerticesPesoAlcancaveis(g,1,5);
-	g = resetVerticesVisitados(g);
-	while(verticesPeso){
-		printf("Origem -> %d  Destino -> %d Peso -> %.2f\n", verticesPeso->verticeOrigem,verticesPeso->vertice,verticesPeso->peso);
-		verticesPeso = verticesPeso->seguinte;
-	}
+	// verticesPeso = obterVerticesPesoAlcancaveis(g, 1, 10);
+	// g = resetVerticesVisitados(g);
+
+	// printf("Veiculos a 10 de peso do Porto\n");
+	// while (verticesPeso)
+	// {
+	// 	displayVehiclesList(verticesPeso->veiculos);
+	// 	verticesPeso = verticesPeso->seguinte;
+	// }
+	
+	// //Save graph on binary
 	saveGraph(g, "./graph/teste.bin");
 	g = destroyGraph(g);
 	// encontrarCaminhoMaisCurto(g, 1,"F");

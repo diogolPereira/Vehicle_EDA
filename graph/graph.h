@@ -7,6 +7,7 @@
  *********************************************************************/
 #include <stdio.h>
 #include <stdbool.h>
+#include "../vehicle/vehicle.h"
 
 #ifndef GRAPHLIB
 #define GRAPHLIB
@@ -26,6 +27,7 @@ typedef struct grafo
     char cidade[TAM]; // geocódigo what3words
     bool visitado;
     Adjacente *adjacentes;
+    Vehicle *veiculos;
     struct grafo *seguinte;
 } Grafo;
 
@@ -35,6 +37,14 @@ typedef struct AdjFile {
 	float weight;		/*!< Peso */
 }AdjFile;
 
+typedef struct veiFile {
+	int codOrigem;
+    int id; 
+    char name[NAME_LENGHT];
+    float battery;
+    float rentCost;
+}VeiFile;
+
 typedef struct VerticeFile {
 	int cod;					/*!< Código do Vértice */
 	char cidade[TAM];				/*!< Nome da Cidade */
@@ -43,9 +53,9 @@ typedef struct VerticeFile {
 // Estrutura para armazenar o vértice e o peso acumulado
 typedef struct verticePeso
 {
-    int vertice;
-    int verticeOrigem;
+    char caminho[TAM];
     float peso;
+    Vehicle *veiculos;
     struct verticePeso * seguinte;
 } VerticePeso;
 
@@ -81,11 +91,13 @@ int saveGraph(Grafo *g, char *fileName);
 
 VerticePeso* obterVerticesPesoAlcancaveis(Grafo* g, int verticeOrigem, float pesoMaximo);
 
-int depthFirstSearchRec(Grafo* g, int origem, float pesoMaximo,float  pesoAtual ,VerticePeso** vpAux);
+int depthFirstSearchRec(Grafo* g,int atual,int origem, float pesoMaximo,float  pesoAtual ,VerticePeso** vpAux, char* caminhoAtual);
 Grafo* procuraVerticeCod(Grafo* g, int cod);
 int numeroVertices(Grafo* verticeAtual);
 Grafo *resetVerticesVisitados(Grafo* g);
 Grafo* destroyGraph(Grafo* g);
-
+Grafo *loadVei(Grafo *g);
 Adjacente* destroyAdj(Adjacente* h);
+
+int adicionarVeiculoVertice(Grafo *g, int verticeCod, Vehicle* veiculo);
 #endif
