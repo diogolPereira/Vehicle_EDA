@@ -24,14 +24,14 @@ void displayRentsList(Rent *lst)
 }
 
 /* Create a new rent struct and return it */
-void createRent(int userNif, int vehicleId, int numberOfDays, Rent **head)
+Rent* createRent(int userNif, int vehicleId, int numberOfDays)
 {
     Rent *newRent = malloc(sizeof(Rent));
 
     if (newRent == NULL)
     {
         printf("Error: Unable to allocate memory for rent\n");
-        return;
+        return newRent;
     }
 
     /* Set the ID for the new rent */
@@ -43,7 +43,7 @@ void createRent(int userNif, int vehicleId, int numberOfDays, Rent **head)
 
     /* Set the next pointer to NULL */
     newRent->next = NULL;
-    insertRent(newRent, head);
+    return newRent;
 }
 
 /*Insert one given rent to a rentList*/

@@ -22,7 +22,7 @@ typedef struct Rent
 } Rent;
 
 /* Create a new rent struct and return it */
-void createRent(int userNif, int vehicleId, int numberOfDays, Rent **head);
+Rent* createRent(int userNif, int vehicleId, int numberOfDays);
 
 /*Insert one given rent to a rentList*/
 void insertRent(Rent *newRent, Rent **head);

@@ -3,6 +3,7 @@
 #include "user/user.h"
 #include "vehicle/vehicle.h"
 #include "rent/rent.h"
+#include "graph/graph.h"
 
 // Primary menu of the app
 int primaryMenu()
@@ -143,12 +144,18 @@ void addRent(User **userList, Vehicle *vehicleList, Rent **rentList)
 	user->balance -= rentCost;
 
 	/* Create the new rent */
-	createRent(userNif, vehicleId, numberOfDays, rentList);
+	Rent *newRent = createRent(userNif, vehicleId, numberOfDays);
+	if (newRent == NULL)
+	{
+		printf("Error: Rent cannot be created\n");
+		return;
+	}
+	insertRent(newRent, rentList);
 
 	printf("\nRent created.\n");
 }
 
-int main()
+int mainPart1()
 {
 
 	User *users = NULL;
@@ -230,4 +237,53 @@ int main()
 	saveAllInfoOnBinaries(users, vehicles, rents);
 
 	waitHack();
+}
+
+int mainPart2()
+{    
+	VerticePeso* verticesPeso = NULL;
+
+	Grafo* g = NULL;
+	// criarVertice(&g, 1 ,  "A");
+	// criarVertice(&g, 2 , "B");
+	// criarVertice(&g, 3 , "C");
+	// criarVertice(&g, 4,"D");
+	// criarVertice(&g, 5,"E");
+	// criarVertice(&g, 6,"F");
+	// criarVertice(&g, 7,"G");
+
+	// criarAresta(g, 1, 3, 11);
+	// criarAresta(g, 1, 2, 1);
+	// criarAresta(g, 1, 4, 3);
+	// criarAresta(g, 1, 5, 5);
+
+	// criarAresta(g, 2, 3, 9);
+	// criarAresta(g, 2, 4, 3);
+	// criarAresta(g, 2, 5, 2);
+
+	// criarAresta(g, 3, 4, 1);
+	// criarAresta(g, 3, 7, 4);
+
+	// criarAresta(g, 4, 5, 12);
+
+	// printf("Grafo\n");
+	// mostraGrafo(g);
+
+	loadGraph(&g, "./graph/teste.bin");
+	loadAdj(g);
+	mostraGrafo(g);
+	verticesPeso = obterVerticesPesoAlcancaveis(g,1,5);
+	g = resetVerticesVisitados(g);
+	while(verticesPeso){
+		printf("Origem -> %d  Destino -> %d Peso -> %.2f\n", verticesPeso->verticeOrigem,verticesPeso->vertice,verticesPeso->peso);
+		verticesPeso = verticesPeso->seguinte;
+	}
+	saveGraph(g, "./graph/teste.bin");
+	g = destroyGraph(g);
+	// encontrarCaminhoMaisCurto(g, 1,"F");
+}
+
+int main()
+{
+	mainPart2();
 }
